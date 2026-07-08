@@ -29,6 +29,7 @@ void CApp::Initialize(HWND h)
     m_nScore = 0;
     m_nHoldType = 0;
     m_bHoldUsed = false;
+    m_eState = STATE_TITLE;
 
     srand(time(nullptr));
 
@@ -42,12 +43,12 @@ void CApp::Initialize(HWND h)
     m_renderer.Initialize(hdc, rc.right, rc.bottom);
     ReleaseDC(m_hWnd, hdc);
 
-    m_board.Clear();
+    //m_board.Clear();
 
-    m_curBlock.Init(NextBlockType());
-    m_nextBlock.Init(NextBlockType());
+    //m_curBlock.Init(NextBlockType());
+    //m_nextBlock.Init(NextBlockType());
 
-    SetTimer(m_hWnd, 1, GetDropInterval(m_nLevel), nullptr);
+    //SetTimer(m_hWnd, 1, GetDropInterval(m_nLevel), nullptr);
 
 }
 
@@ -55,20 +56,20 @@ void CApp::OnDraw(HDC hdc)
 {
     HDC mem = m_renderer.BeginDraw();
 
-    m_board.Draw(mem, BOARD_X, BOARD_Y);
+    switch (m_eState) {
+    case STATE_TITLE:
+        DrawTitle(mem);
+        break;
 
-    if (!m_bGameOver) {
-        m_board.DrawGhost(mem, m_curBlock, BOARD_X, BOARD_Y);
-        m_board.DrawBlock(mem, m_curBlock, BOARD_X, BOARD_Y);
+    case STATE_SINGLE_PLAY:
+        DrawSinglePlay(hdc, mem);
+        break;
+
+    default:
+        break;
     }
 
-    DrawSidePanel(mem);
-
-    if (m_bGameOver)
-        DrawGameOver(mem);
-
     m_renderer.EndDraw(hdc);
-
 }
 
 void CApp::Update()
@@ -234,6 +235,82 @@ void CApp::SetBlockQueue()
         m_queue[i] = m_queue[j];
         m_queue[j] = nTmp;
     }
+}
+
+void CApp::DrawTitle(HDC hdc)
+{
+    RECT rcClient;
+    GetClientRect(m_hWnd, &rcClient);
+    int nW = rcClient.right;
+    int nH = rcClient.bottom;
+
+    SetBkMode(hdc, TRANSPARENT);
+
+    //CreateFontW(_In_ int cHeight, _In_ int cWidth, _In_ int cEscapement, _In_ int cOrientation, _In_ int cWeight, _In_ DWORD bItalic,
+    //    _In_ DWORD bUnderline, _In_ DWORD bStrikeOut, _In_ DWORD iCharSet, _In_ DWORD iOutPrecision, _In_ DWORD iClipPrecision,
+    //    _In_ DWORD iQuality, _In_ DWORD iPitchAndFamily, _In_opt_ LPCWSTR pszFaceName);
+
+    LPCWSTR font1 = L"Small Fonts";
+    HFONT fontTitle = CreateFont(60, 0, 0, 0, FW_BOLD, FALSE, FALSE, FALSE, DEFAULT_CHARSET, 0, 0, 0, 0, font1);
+    HFONT oldFont = (HFONT)SelectObject(hdc, fontTitle);
+
+    LPCWSTR sTitle = L"TETRIS";
+    COLORREF titleColors[] = {
+        RGB(145, 220, 230),  // T 하늘
+        RGB(245, 230, 155),  // E 노랑
+        RGB(190, 160, 220),  // T 보라
+        RGB(235, 155, 155),  // R 핑크
+        RGB(150, 170, 225),  // I 파랑
+        RGB(160, 215, 165),  // S 초록
+    };
+
+    SIZE totalSize;
+    GetTextExtentPoint32W(hdc, sTitle, 6, &totalSize);
+    int tx = (nW - totalSize.cx) / 2;
+    //int ty = (nH - totalSize.cy) / 2;
+    int ty = (nH) / 4;
+
+    for (int i = 0; i < 6; i++) {
+        SetTextColor(hdc, titleColors[i]);
+        SIZE cs;
+        GetTextExtentPoint32(hdc, &sTitle[i], 1, &cs);
+        TextOut(hdc, tx, ty, &sTitle[i], 1);
+        tx += cs.cx;
+    }
+
+    SelectObject(hdc, oldFont);
+    DeleteObject(fontTitle);
+}
+
+void CApp::OnKeyTitle()
+{
+}
+
+void CApp::DrawSinglePlay(HDC hdc, HDC mem)
+{
+    m_board.Draw(mem, BOARD_X, BOARD_Y);
+
+    if (!m_bGameOver) {
+        m_board.DrawGhost(mem, m_curBlock, BOARD_X, BOARD_Y);
+        m_board.DrawBlock(mem, m_curBlock, BOARD_X, BOARD_Y);
+    }
+
+    DrawSidePanel(mem);
+
+    if (m_bGameOver)
+        DrawGameOver(mem);
+
+    m_renderer.EndDraw(hdc);
+}
+
+void CApp::OnPlay()
+{
+    m_board.Clear();
+
+    m_curBlock.Init(NextBlockType());
+    m_nextBlock.Init(NextBlockType());
+
+    SetTimer(m_hWnd, 1, GetDropInterval(m_nLevel), nullptr);
 }
 
 int CApp::NextBlockType()

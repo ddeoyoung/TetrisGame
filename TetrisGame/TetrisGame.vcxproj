@@ -90,12 +90,15 @@
     <ClCompile Include="Board.cpp" />
     <ClCompile Include="Block.cpp" />
     <ClCompile Include="Renderer.cpp" />
+    <ClCompile Include="TitleLevel.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="App.h" />
     <ClInclude Include="Board.h" />
     <ClInclude Include="Block.h" />
+    <ClInclude Include="CommonDefs.h" />
     <ClInclude Include="Renderer.h" />
+    <ClInclude Include="TitleLevel.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

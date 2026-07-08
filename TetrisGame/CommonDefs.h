@@ -1,0 +1,15 @@
+#pragma once
+
+enum eGameState {
+	STATE_TITLE = 0,
+	STATE_SINGLE_PLAY,
+	STATE_MULTI_LOBBY,
+	STATE_MULTI_PLAY,
+	STATE_REPLAY,
+};
+
+enum eTitleMenu {
+	MENU_SINGLE = 0,
+	MENU_MULTI,
+	MENU_REPLAY,
+};

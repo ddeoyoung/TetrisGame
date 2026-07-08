@@ -5,6 +5,7 @@
 #include "Renderer.h"
 #include "Board.h"
 #include "Block.h"
+#include "CommonDefs.h"
 
 class CApp
 {
@@ -31,6 +32,13 @@ private:
     int  NextBlockType();
     void SetBlockQueue();
 
+    void DrawTitle(HDC hdc);
+    void OnKeyTitle();
+
+    void DrawSinglePlay(HDC hdc, HDC mem);
+
+    void OnPlay();
+
 private:
     HWND m_hWnd = nullptr;
     CRenderer m_renderer;
@@ -49,5 +57,6 @@ private:
     int m_nHoldType = 0;
     bool m_bHoldUsed = false;
 
-
+    // 게임 상태
+    eGameState m_eState = STATE_TITLE;
 };
