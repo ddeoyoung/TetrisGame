@@ -26,7 +26,13 @@
     <ClCompile Include="Renderer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="TitleLevel.cpp">
+    <ClCompile Include="GameSession.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MultiPlay.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Replay.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -40,13 +46,22 @@
     <ClInclude Include="Block.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="CommonDefs.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="Renderer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="TitleLevel.h">
+    <ClInclude Include="GameSession.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="CommonDefs.h">
+    <ClInclude Include="Protocol.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MultiPlay.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Replay.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

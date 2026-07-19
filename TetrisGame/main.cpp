@@ -1,4 +1,3 @@
-#include <windows.h>
 #include "App.h"
 
 CApp g_app;
@@ -26,6 +25,11 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
         g_app.OnKeyDown(wParam);
         return 0;
 
+
+    case WM_CHAR:
+        g_app.OnChar((wchar_t)wParam);
+        return 0;
+
     case WM_ERASEBKGND:
         return 1;
 
@@ -34,6 +38,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
         PostQuitMessage(0);
         return 0;
     }
+
     return DefWindowProc(hWnd, msg, wParam, lParam);
 }
 
